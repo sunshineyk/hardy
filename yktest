@@ -1,0 +1,135 @@
+/**
+ *Create by {Hardy_yang} on2018/7/25
+ */
+/**@function 頁面文檔加載完畢後，調用初始化函數*/
+$(function() {
+    // 模塊初始化；
+    APP.qc.init();
+});
+(function(A) {
+    var _this = null;
+    A.qc = A.qc || {};
+    _y = A.qc = {
+        Main: {
+            data() {
+                return {
+                    ExportToExcel:'導出為Excel',
+                    current_num: '1',
+                    datacount: '10',
+                    pageSize: '',
+                    time:'',
+                    // 开始、结束时间
+                    begin:'',
+                    end:'',
+                    input_data:'',
+                    current_begin_time:'',
+                    data1: [
+                        {dw:'MFG',jz:'AP09',bb:"白班",xb:'點膠一線',yd:'36',sd:'35',cql:'97%',sj:'5',bj:'4',cj:"1",nx:'2',gx:'0',tx:'0',ttl:'1',qql:'3%'},
+                        {dw:'MFG',jz:'AP08',bb:"白班",xb:'點膠二線',yd:'36',sd:'35',cql:'97%',sj:'5',bj:'4',cj:"0",nx:'2',gx:'0',tx:'0',ttl:'2',qql:'3%'},
+                        {dw:'MFG',jz:'AP07',bb:"白班",xb:'點膠三線',yd:'36',sd:'35',cql:'97%',sj:'5',bj:'4',cj:"2",nx:'2',gx:'3',tx:'4',ttl:'1',qql:'3%'},
+                        {dw:'MFG',jz:'AP06',bb:"白班",xb:'點膠四線',yd:'36',sd:'35',cql:'97%',sj:'5',bj:'4',cj:"0",nx:'2',gx:'0',tx:'0',ttl:'1',qql:'3%'},
+                        {dw:'MFG',jz:'AP05',bb:"白班",xb:'點膠五線',yd:'36',sd:'35',cql:'97%',sj:'5',bj:'4',cj:"0",nx:'2',gx:'2',tx:'1',ttl:'1',qql:'3%'}
+
+                    ],
+                    columns1: [
+                        {title: '單位', key: 'dw', align: 'center'},
+                        {title: '機種', key: 'jz', align: 'center'},
+                        {title: '班別', key: 'bb', align: 'center'},
+                        {title: '線別', key: 'xb', align: 'center'},
+                        {title: '出勤狀況', key: 'cqzk', align: 'center',
+                           children:[
+                               {
+                                   title:'出勤率',key:'cq',align:'center',
+                                   children: [
+                                       {title:'應到',key:'yd',align: 'center'},
+                                       {title:'實到',key:'sd',align: 'center'},
+                                       {title:'出勤率',key:'cql',align: 'center'},
+                                   ]
+                               },
+                               {
+                                   title:'缺勤分佈',key:'qq',align:'center',
+                                   children:[
+                                       {title:'事假',key:'sj',align: 'center'},
+                                       {title:'病假',key:'bj',align: 'center'},
+                                       {title:'產假',key:'cj',align: 'center'},
+                                       {title:'年休',key:'nx',align: 'center'},
+                                       {title:'公休',key:'gx',align: 'center'},
+                                       {title:'調班',key:'tx',align: 'center'},
+                                       {title:'TTL缺勤',key:'ttl',align: 'center'},
+                                       {title:'缺勤率',key:'qql',align: 'center'},
+                                   ]
+                               }
+                           ]
+                        },
+
+                    ],
+                }
+            },
+            // 实例创建完成后立即调用
+            created: function () {
+                let jj=this;
+                this.download(function (data) {
+
+                })
+            },
+            methods: {
+                 download:function (callback) {
+                  $.ajax({
+                      type:'GET',
+                      dataType:'json',
+                      url:'',
+                      success:function (json) {
+                          let data=json.data;
+                          callback(data);
+                      }
+                  })
+                },
+                numChange:function (num) {
+                    this.current_num=num;
+                },
+                pageSizeChange:function (pagesize) {
+                    this.pageSize=pagesize;
+                },
+                // 日期改变
+                dateChange:function (date) {
+                        let date1 = new Date(date)
+                        this.current_begin_time = date1.getTime() / 1000;
+                        console.log(this.current_begin_time)
+                },
+                isEmpty:function () {
+
+                },
+                inputChanged:function () {
+                   if(this.input_data.length==0){
+
+                   }
+                },
+                search:function () {
+
+                },
+                // 導出
+                export1:function () {
+                    window.location.href="";
+                },
+                // 时间改变
+                timeChange:function (val) {
+                    this.time=val;
+                },
+                // 时间确定按钮
+                ok:function () {
+                    console.log(this.time);
+                    // let date1=new Date(this.time[0]);
+                    // let date2=new Date(this.time[1]);
+                    // this.begin=date1.getTime()/1000;
+                    // this.end=date2.getTime()/1000;
+
+                }
+            }
+        },
+        init: function () {
+            iview.lang("zh-TW");
+            var Component = Vue.extend(_y.Main);
+            new Component().$mount('#quick');
+        },
+    }
+}(APP));
